@@ -1,6 +1,7 @@
 import tkinter as tk
+from tkinter import messagebox
 root = tk.Tk()
-root.geometry("300x200")
+root.geometry("400x300")
 root.title("Tic Tac Toe")
 frame = tk.Frame(root)
 frame.pack()
@@ -44,39 +45,28 @@ def play(event):
         button["text"] = turn
         board[clicked] = turn
         if checkforwin(turn):
-            print(turn, "wins the game")
+            tk.messagebox.showinfo("Game Over", f"{turn} wins the game!")
+            reset_board()
             return  # Exit the function if there's a winner
         # If all positions are filled and no win detected, it's a draw
         if all(value != " " for value in board.values()):
-            print("Game Draw")
+            tk.messagebox.showinfo("Game Over", "Game Draw")
+            reset_board()
             return  # Exit the function if it's a draw
         turn = "O" if turn == "X" else "X"
+def reset_board():
+    global board, turn
+    board = {1: " ", 2: " ", 3: " ",
+            4: " ", 5: " ", 6: " ",
+            7: " ", 8: " ", 9: " "}
+    turn = "X"
+    for button in buttons:
+        button["text"] = ""
 # Buttons
-button1 = tk.Button(frame1, text="", width=4, height=2)
-button1.grid(row=0, column=0)
-button1.bind("<Button-1>", play)
-button2 = tk.Button(frame1, text="", width=4, height=2)
-button2.grid(row=0, column=1)
-button2.bind("<Button-1>", play)
-button3 = tk.Button(frame1, text="", width=4, height=2)
-button3.grid(row=0, column=2)
-button3.bind("<Button-1>", play)
-button4 = tk.Button(frame1, text="", width=4, height=2)
-button4.grid(row=1, column=0)
-button4.bind("<Button-1>", play)
-button5 = tk.Button(frame1, text="", width=4, height=2)
-button5.grid(row=1, column=1)
-button5.bind("<Button-1>", play)
-button6 = tk.Button(frame1, text="", width=4, height=2)
-button6.grid(row=1, column=2)
-button6.bind("<Button-1>", play)
-button7 = tk.Button(frame1, text="", width=4, height=2)
-button7.grid(row=2, column=0)
-button7.bind("<Button-1>", play)
-button8 = tk.Button(frame1, text="", width=4, height=2)
-button8.grid(row=2, column=1)
-button8.bind("<Button-1>", play)
-button9 = tk.Button(frame1, text="", width=4, height=2)
-button9.grid(row=2, column=2)
-button9.bind("<Button-1>", play)
+buttons = []
+for i in range(9):
+    button = tk.Button(frame1, text="", width=8, height=4, bg="yellow")
+    button.grid(row=i//3, column=i%3)
+    button.bind("<Button-1>", play)
+    buttons.append(button)
 root.mainloop()
